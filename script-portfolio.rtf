@@ -1,0 +1,293 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang3082{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
+{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang10 -- MySQL Workbench Forward Engineering\par
+\par
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;\par
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;\par
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';\par
+\par
+-- -----------------------------------------------------\par
+-- Schema portfolio\par
+-- -----------------------------------------------------\par
+\par
+-- -----------------------------------------------------\par
+-- Schema portfolio\par
+-- -----------------------------------------------------\par
+CREATE SCHEMA IF NOT EXISTS `portfolio` DEFAULT CHARACTER SET utf8 ;\par
+USE `portfolio` ;\par
+\par
+-- -----------------------------------------------------\par
+-- Table `portfolio`.`persona`\par
+-- -----------------------------------------------------\par
+CREATE TABLE IF NOT EXISTS `portfolio`.`persona` (\par
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,\par
+  `nombre` VARCHAR(45) NOT NULL,\par
+  `apellido` VARCHAR(45) NOT NULL,\par
+  `telefono` INT NOT NULL,\par
+  `sobremi` LONGTEXT NOT NULL,\par
+  `provincia` VARCHAR(45) NOT NULL,\par
+  `img` VARCHAR(100) NOT NULL,\par
+  `banner` VARCHAR(45) NOT NULL,\par
+  `e-mail` VARCHAR(45) NOT NULL,\par
+  `fortaleza` VARCHAR(45) NULL,\par
+  `debilidad` VARCHAR(45) NULL,\par
+  `estcivil` VARCHAR(45) NULL,\par
+  PRIMARY KEY (`id`))\par
+ENGINE = InnoDB;\par
+\par
+CREATE UNIQUE INDEX `e-mail_UNIQUE` ON `portfolio`.`persona` (`e-mail` ASC) VISIBLE;\par
+\par
+\par
+-- -----------------------------------------------------\par
+-- Table `portfolio`.`experiencia`\par
+-- -----------------------------------------------------\par
+CREATE TABLE IF NOT EXISTS `portfolio`.`experiencia` (\par
+  `id` INT NOT NULL AUTO_INCREMENT,\par
+  `cargo` VARCHAR(45) NOT NULL,\par
+  `inicio` DATE NOT NULL,\par
+  `fin` VARCHAR(45) NULL,\par
+  `descripcion` LONGTEXT NOT NULL,\par
+  `img` VARCHAR(45) NULL,\par
+  `empresa` VARCHAR(45) NOT NULL,\par
+  `persona_id` INT UNSIGNED NOT NULL,\par
+  `estrabajoactual` TINYINT NULL,\par
+  PRIMARY KEY (`id`))\par
+ENGINE = InnoDB;\par
+\par
+\par
+-- -----------------------------------------------------\par
+-- Table `portfolio`.`certificado`\par
+-- -----------------------------------------------------\par
+CREATE TABLE IF NOT EXISTS `portfolio`.`certificado` (\par
+  `id` INT NOT NULL,\par
+  `titulo` VARCHAR(45) NOT NULL,\par
+  `img` VARCHAR(45) NULL,\par
+  PRIMARY KEY (`id`))\par
+ENGINE = InnoDB;\par
+\par
+\par
+-- -----------------------------------------------------\par
+-- Table `portfolio`.`estudio`\par
+-- -----------------------------------------------------\par
+CREATE TABLE IF NOT EXISTS `portfolio`.`estudio` (\par
+  `id` INT NOT NULL,\par
+  `titulo` VARCHAR(45) NOT NULL,\par
+  `inicio` DATE NOT NULL,\par
+  `fin` DATE NULL,\par
+  `institucion` VARCHAR(45) NOT NULL,\par
+  `img` VARCHAR(45) NULL,\par
+  `curso` ENUM('formal', 'curso', 'bootcamp') NOT NULL,\par
+  `persona_id` INT UNSIGNED NOT NULL,\par
+  `certificado_id` INT NOT NULL,\par
+  PRIMARY KEY (`id`))\par
+ENGINE = InnoDB;\par
+\par
+\par
+-- -----------------------------------------------------\par
+-- Table `portfolio`.`proyecto`\par
+-- -----------------------------------------------------\par
+CREATE TABLE IF NOT EXISTS `portfolio`.`proyecto` (\par
+  `id` INT NOT NULL,\par
+  `nombre` VARCHAR(45) NOT NULL,\par
+  `urlproyecto` VARCHAR(45) NULL,\par
+  `img` VARCHAR(45) NULL,\par
+  `tecnologia` VARCHAR(45) NULL,\par
+  `persona_id` INT UNSIGNED NOT NULL,\par
+  PRIMARY KEY (`id`))\par
+ENGINE = InnoDB;\par
+\par
+\par
+-- -----------------------------------------------------\par
+-- Table `portfolio`.`habilidad`\par
+-- -----------------------------------------------------\par
+CREATE TABLE IF NOT EXISTS `portfolio`.`habilidad` (\par
+  `id` INT NOT NULL,\par
+  `nombre` VARCHAR(45) NOT NULL,\par
+  `porcentaje` INT NOT NULL,\par
+  PRIMARY KEY (`id`))\par
+ENGINE = InnoDB;\par
+\par
+\par
+-- -----------------------------------------------------\par
+-- Table `portfolio`.`redes`\par
+-- -----------------------------------------------------\par
+CREATE TABLE IF NOT EXISTS `portfolio`.`redes` (\par
+  `id` INT NOT NULL,\par
+  `nombre` VARCHAR(45) NULL,\par
+  `icono` VARCHAR(45) NULL,\par
+  `enlace` VARCHAR(45) NULL,\par
+  `persona_id` INT UNSIGNED NOT NULL,\par
+  PRIMARY KEY (`id`))\par
+ENGINE = InnoDB;\par
+\par
+\par
+-- -----------------------------------------------------\par
+-- Table `portfolio`.`habilidad_has_proyecto`\par
+-- -----------------------------------------------------\par
+CREATE TABLE IF NOT EXISTS `portfolio`.`habilidad_has_proyecto` (\par
+  `habilidad_id` INT NOT NULL,\par
+  `proyecto_id` INT NOT NULL,\par
+  PRIMARY KEY (`habilidad_id`, `proyecto_id`))\par
+ENGINE = InnoDB;\par
+\par
+\par
+SET SQL_MODE=@OLD_SQL_MODE;\par
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;\par
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;\par
+\par
+\ul\b\fs28 sql para pasar tarea\ulnone\b0\fs22\par
+
+\pard\sl240\slmult1 Listar los nombres de los usuarios\par
+select nombre from Ususarios\par
+\par
+Calcular el saldo m\'e1ximo de los usuarios de sexo \ldblquote Mujer\rdblquote\par
+SELECT MAX(saldo) FROM Usuarios WHERE sexo = 'M';\par
+\par
+\par
+Listar nombre y tel\'e9fono de los usuarios con tel\'e9fono NOKIA, BLACKBERRY o SONY\par
+SELECT nombre, telefono FROM Usuarios WHERE marca IN('NOKIA', 'BLACKBERRY', 'SONY');\par
+\par
+Contar los usuarios sin saldo o inactivos\par
+SELECT COUNT(*) FROM Usuarios WHERE NOT activo OR saldo <= 0\par
+\par
+Listar el login de los usuarios con nivel 1, 2 o 3\par
+SELECT usuario FROM Usuarios WHERE nivel IN(1, 2, 3);\par
+\par
+Listar los n\'fameros de tel\'e9fono con saldo menor o igual a 300\par
+SELECT telefono FROM Usuarios WHERE saldo <=300 \par
+\par
+Calcular la suma de los saldos de los usuarios de la compa\'f1\'eda telef\'f3nica NEXTEL\par
+SELECT SUM(saldo) FROM Usuarios WHERE compania = 'NEXTEL'\par
+\par
+Contar el n\'famero de usuarios por compa\'f1\'eda telef\'f3nica\par
+SELECT compania, COUNT(*) FROM Usuarios GROUP BY compania;\par
+\par
+Contar el n\'famero de usuarios por nivel\par
+SELECT nivel, COUNT(*) FROM Usuarios GROUP BY nivel;\par
+\par
+Listar el login de los usuarios con nivel 2\par
+SELECT usuario FROM Usuarios WHERE nivel=2;\par
+\par
+Mostrar el email de los usuarios que usan gmail\par
+SELECT email FROM Usuarios WHERE email LIKE '%gmail.com'\par
+\par
+Listar nombre y tel\'e9fono de los usuarios con tel\'e9fono LG, SAMSUNG o MOTOROLA\par
+SELECT nombre,telefono FROM Usuarios WHERE marca IN('LG','SAMSUNG','MOTOROLA')\par
+\par
+Listar nombre y tel\'e9fono de los usuarios con tel\'e9fono que no sea de la marca LG o SAMSUNG\par
+SELECT nombre,telefono FROM Usuarios WHERE marca NOT IN('LG','SAMSUNG')\par
+\par
+Listar el login y tel\'e9fono de los usuarios con compa\'f1\'eda telef\'f3nica IUSACELL\par
+SELECT usuario,telefono FROM Usuarios WHERE compania='IUSACELL'\par
+\par
+Listar el login y tel\'e9fono de los usuarios con compa\'f1\'eda telef\'f3nica que no sea TELCEL\par
+SELECT usuario,telefono FROM Usuarios WHERE compania !='TELCEL'\par
+\par
+Calcular el saldo promedio de los usuarios que tienen tel\'e9fono marca NOKIA\par
+SELECT AVG(saldo) FROM Usuarios WHERE marca = 'NOKIA'\par
+\par
+Listar el login y tel\'e9fono de los usuarios con compa\'f1\'eda telef\'f3nica IUSACELL o AXEL\par
+SELECT usuario, telefono FROM Usuarios WHERE compania IN('IUSACELL', 'AXEL');\par
+\par
+Mostrar el email de los usuarios que no usan yahoo\par
+SELECT email  FROM Usuarios WHERE email NOT LIKE ('%yahoo.com')\par
+\par
+Listar el login y tel\'e9fono de los usuarios con compa\'f1\'eda telef\'f3nica que no sea TELCEL o IUSACELL\par
+SELECT usuario,telefono FROM Usuarios WHERE compania NOT IN ('TELCEL','IUSACELL')\par
+\par
+\par
+Listar el login y tel\'e9fono de los usuarios con compa\'f1\'eda telef\'f3nica UNEFON\par
+SELECT usuario,telefono FROM Usuarios WHERE compania='UNEFON'\par
+\par
+Listar las diferentes marcas de celular en orden alfab\'e9tico descendentemente\par
+SELECT DISTINCT marca FROM Usuarios ORDER BY marca DESC;\par
+\par
+Listar las diferentes compa\'f1\'edas en orden alfab\'e9tico aleatorio\par
+SELECT DISTINCT compania FROM Usuarios ORDER BY RAND();\par
+\par
+Listar el login de los usuarios con nivel 0 o 2\par
+SELECT usuario FROM Usuarios WHERE nivel IN(0, 2)\par
+\par
+Calcular el saldo promedio de los usuarios que tienen tel\'e9fono marca LG\par
+SELECT AVG(saldo) FROM Usuarios WHERE marca='LG'\par
+\par
+Listar el login de los usuarios con nivel 1 o 3\par
+SELECT usuario FROM Usuarios WHERE nivel IN(1,3)\par
+\par
+Listar nombre y tel\'e9fono de los usuarios con tel\'e9fono que no sea de la marca BLACKBERRY\par
+SELECT nombre, telefono FROM Usuarios WHERE marca <> "BLACKBERRY"\par
+\par
+Listar el login de los usuarios con nivel 3\par
+SELECT usuario FROM Usuarios WHERE nivel=2\par
+\par
+Listar el login de los usuarios con nivel 0\par
+SELECT usuario FROM Usuarios WHERE nivel=0\par
+\par
+Listar el login de los usuarios con nivel 1\par
+SELECT usuario FROM Usuarios WHERE nivel=1\par
+\par
+Contar el n\'famero de usuarios por sexo\par
+SELECT sexo , COUNT(*) FROM Usuarios GROUP BY sexo\par
+\par
+\par
+Listar el login y tel\'e9fono de los usuarios con compa\'f1\'eda telef\'f3nica AT&T\par
+SELECT usuario,telefono FROM Usuarios WHERE compania= 'AT&T'\par
+\par
+Listar las diferentes compa\'f1\'edas en orden alfab\'e9tico descendentemente\par
+SELECT DISTINCT compania FROM Usuarios ORDER BY compania DESC\par
+\par
+Listar el login de los usuarios inactivos\par
+SELECT usuario FROM Usuarios WHERE NOT activo\par
+\par
+Listar los n\'fameros de tel\'e9fono sin saldo\par
+SELECT telefono FROM Usuarios WHERE saldo <=0\par
+\par
+Calcular el saldo m\'ednimo de los usuarios de sexo \ldblquote Hombre\rdblquote\par
+SELECT MIN(saldo) FROM Usuarios WHERE sexo = 'H';\par
+\par
+\par
+Listar los n\'fameros de tel\'e9fono con saldo mayor a 300\par
+\par
+Contar el n\'famero de usuarios por marca de tel\'e9fono\par
+SELECT marca, COUNT(*) FROM Usuarios GROUP BY marca\par
+\par
+Listar nombre y tel\'e9fono de los usuarios con tel\'e9fono que no sea de la marca LG\par
+SELECT nombre, telefono FROM Usuarios WHERE marca <> "LG"\par
+\par
+Listar las diferentes compa\'f1\'edas en orden alfab\'e9tico ascendentemente\par
+SELECT DISTINCT compa\'f1ia FROM tblUsuarios ORDER BY compa\'f1ia ASC\par
+\par
+Calcular la suma de los saldos de los usuarios de la compa\'f1\'eda telef\'f3nica UNEFON\par
+SELECT SUM(saldo) FROM Usuarios WHERE compa\'f1ia = 'UNEFON'\par
+\par
+Mostrar el email de los usuarios que usan hotmail\par
+SELECT email FROM Usuarios WHERE email LIKE "%hotmail.com"\par
+\par
+Listar los nombres de los usuarios sin saldo o inactivos\par
+SELECT nombre FROM Usuarios WHERE NOT activo OR saldo <= 0\par
+\par
+Listar el login y tel\'e9fono de los usuarios con compa\'f1\'eda telef\'f3nica IUSACELL o TELCEL\par
+SELECT usuario, telefono FROM Usuarios WHERE compa\'f1ia IN('IUSACELL', 'TELCEL')\par
+\par
+Listar las diferentes marcas de celular en orden alfab\'e9tico ascendentemente\par
+SELECT DISTINCT marca FROM Usuarios ORDER BY marca DESC\par
+\par
+Listar las diferentes marcas de celular en orden alfab\'e9tico aleatorio\par
+SELECT DISTINCT marca FROM Usuarios ORDER BY RAND()\par
+\par
+Listar el login y tel\'e9fono de los usuarios con compa\'f1\'eda telef\'f3nica IUSACELL o UNEFON\par
+SELECT usuario, telefono FROM Usuarios WHERE compa\'f1ia IN('IUSACELL', 'UNEFON')\par
+\par
+Listar nombre y tel\'e9fono de los usuarios con tel\'e9fono que no sea de la marca MOTOROLA o NOKIA\par
+SELECT nombre, telefono FROM Usuarios WHERE marca NOT IN('MOTOROLA', 'NOKIA')\par
+\par
+\par
+Calcular la suma de los saldos de los usuarios de la compa\'f1\'eda telef\'f3nica TELCEL\par
+SELECT SUM(saldo) FROM Usuarios WHERE compa\'f1ia = 'TELCEL'\par
+\par
+
+\pard\sa200\sl240\slmult1\par
+\par
+\par
+}
+ 
